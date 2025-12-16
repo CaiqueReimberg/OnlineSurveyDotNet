@@ -146,5 +146,3 @@ A utilização do **Entity Framework InMemory** foi uma decisão consciente, con
 - Esse comportamento é esperado e aceitável para o contexto do projeto
 - Em um cenário de produção, o provider InMemory poderia ser substituído por um banco relacional como **SQL Server** ou **PostgreSQL**, sem impacto significativo nas camadas de domínio e aplicação
 
-### Contexto Geral
-
