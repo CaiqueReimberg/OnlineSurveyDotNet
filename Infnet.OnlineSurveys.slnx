@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Application/">
+    <Project Path="Infnet.OnlineSurveys.Api.Tests/Infnet.OnlineSurveys.Api.Tests.csproj" Id="a89ff2c6-b22d-4887-8ac5-a2505c76c88a" />
+    <Project Path="Infnet.OnlineSurveys.Api/Infnet.OnlineSurveys.Api.csproj" Id="981bcd26-de94-4b07-8849-48a7d915d638" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="Infnet.OnlineSurveys.Domain.Tests/Infnet.OnlineSurveys.Domain.Tests.csproj" Id="90d22229-563a-47a4-8467-0880c4408371" />
+    <Project Path="Infnet.OnlineSurveys.Domain/Infnet.OnlineSurveys.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infnet.OnlineSurveys.Infrastructure.Data.Tests/Infnet.OnlineSurveys.Infrastructure.Data.Tests.csproj" Id="60444a30-6b89-4617-8362-255d7144b233" />
+    <Project Path="Infnet.OnlineSurveys.Infrastructure/Infnet.OnlineSurveys.Infrastructure.Data.csproj" Id="2c0500e4-4549-404b-b354-8e02c5d87adb" />
+  </Folder>
+</Solution>

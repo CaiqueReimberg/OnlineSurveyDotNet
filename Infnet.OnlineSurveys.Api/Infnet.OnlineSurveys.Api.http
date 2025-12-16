@@ -1,0 +1,6 @@
+@Infnet.OnlineSurveys.Api_HostAddress = http://localhost:5152
+
+GET {{Infnet.OnlineSurveys.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
