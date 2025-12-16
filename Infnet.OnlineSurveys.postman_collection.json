@@ -1,0 +1,815 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Infnet.OnlineSurveys API",
+		"description": "Collection completa para testar a API de Pesquisas Online do Infnet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pesquisas (Surveys)",
+			"item": [
+				{
+					"name": "Listar Todas as Pesquisas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys"]
+						},
+						"description": "Retorna todas as pesquisas cadastradas no sistema"
+					}
+				},
+				{
+					"name": "Buscar Pesquisa por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}"]
+						},
+						"description": "Retorna uma pesquisa específica com todas as suas questões e opções"
+					}
+				},
+				{
+					"name": "Buscar Pesquisas por Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/status/Draft",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "status", "Draft"]
+						},
+						"description": "Busca pesquisas por status (Draft, Published, Closed)"
+					}
+				},
+				{
+					"name": "Criar Nova Pesquisa",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"surveyId\", jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Pesquisa de Satisfação 2024\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys"]
+						},
+						"description": "Cria uma nova pesquisa em status Draft"
+					}
+				},
+				{
+					"name": "Atualizar Pesquisa",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Pesquisa de Satisfação 2024 - Atualizada\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}"]
+						},
+						"description": "Atualiza o título de uma pesquisa existente"
+					}
+				},
+				{
+					"name": "Excluir Pesquisa",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}"]
+						},
+						"description": "Remove uma pesquisa do sistema"
+					}
+				},
+				{
+					"name": "Publicar Pesquisa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}/publish",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}", "publish"]
+						},
+						"description": "Publica uma pesquisa (muda status de Draft para Published)"
+					}
+				},
+				{
+					"name": "Fechar Pesquisa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}/close",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}", "close"]
+						},
+						"description": "Fecha uma pesquisa (muda status para Closed)"
+					}
+				},
+				{
+					"name": "Adicionar Questão à Pesquisa",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"questionId\", jsonData.id);",
+									"    if (jsonData.options && jsonData.options.length > 0) {",
+									"        pm.collectionVariables.set(\"optionId\", jsonData.options[0].id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Como você avalia nosso atendimento?\",\n  \"order\": 1,\n  \"options\": [\n    { \"text\": \"Excelente\", \"order\": 1 },\n    { \"text\": \"Bom\", \"order\": 2 },\n    { \"text\": \"Regular\", \"order\": 3 },\n    { \"text\": \"Ruim\", \"order\": 4 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}", "questions"]
+						},
+						"description": "Adiciona uma nova questão com opções a uma pesquisa"
+					}
+				}
+			]
+		},
+		{
+			"name": "Questões (Questions)",
+			"item": [
+				{
+					"name": "Listar Todas as Questões",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "questions"]
+						},
+						"description": "Retorna todas as questões cadastradas"
+					}
+				},
+				{
+					"name": "Buscar Questão por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/questions/{{questionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "questions", "{{questionId}}"]
+						},
+						"description": "Retorna uma questão específica com suas opções"
+					}
+				},
+				{
+					"name": "Buscar Questões de uma Pesquisa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/questions/survey/{{surveyId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "questions", "survey", "{{surveyId}}"]
+						},
+						"description": "Retorna todas as questões de uma pesquisa específica"
+					}
+				},
+				{
+					"name": "Criar Nova Questão",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Qual sua faixa etária?\",\n  \"order\": 2,\n  \"options\": [\n    { \"text\": \"18-25 anos\", \"order\": 1 },\n    { \"text\": \"26-35 anos\", \"order\": 2 },\n    { \"text\": \"36-45 anos\", \"order\": 3 },\n    { \"text\": \"46+ anos\", \"order\": 4 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "questions"]
+						},
+						"description": "Cria uma nova questão com opções"
+					}
+				},
+				{
+					"name": "Atualizar Questão",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Como você avalia nosso atendimento? (Atualizado)\",\n  \"order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/questions/{{questionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "questions", "{{questionId}}"]
+						},
+						"description": "Atualiza uma questão existente"
+					}
+				},
+				{
+					"name": "Excluir Questão",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/questions/{{questionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "questions", "{{questionId}}"]
+						},
+						"description": "Remove uma questão"
+					}
+				},
+				{
+					"name": "Adicionar Opção à Questão",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Muito Ruim\",\n  \"order\": 5\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/questions/{{questionId}}/options",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "questions", "{{questionId}}", "options"]
+						},
+						"description": "Adiciona uma nova opção a uma questão existente"
+					}
+				}
+			]
+		},
+		{
+			"name": "Opções (Options)",
+			"item": [
+				{
+					"name": "Listar Todas as Opções",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/options",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "options"]
+						},
+						"description": "Retorna todas as opções cadastradas"
+					}
+				},
+				{
+					"name": "Buscar Opção por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/options/{{optionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "options", "{{optionId}}"]
+						},
+						"description": "Retorna uma opção específica"
+					}
+				},
+				{
+					"name": "Buscar Opções de uma Questão",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/options/question/{{questionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "options", "question", "{{questionId}}"]
+						},
+						"description": "Retorna todas as opções de uma questão específica"
+					}
+				},
+				{
+					"name": "Criar Nova Opção",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Neutro\",\n  \"order\": 3\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/options",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "options"]
+						},
+						"description": "Cria uma nova opção"
+					}
+				},
+				{
+					"name": "Atualizar Opção",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Excelente (5 estrelas)\",\n  \"order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/options/{{optionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "options", "{{optionId}}"]
+						},
+						"description": "Atualiza uma opção existente"
+					}
+				},
+				{
+					"name": "Excluir Opção",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/options/{{optionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "options", "{{optionId}}"]
+						},
+						"description": "Remove uma opção"
+					}
+				}
+			]
+		},
+		{
+			"name": "Respostas (Responses)",
+			"item": [
+				{
+					"name": "Listar Todas as Respostas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/responses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses"]
+						},
+						"description": "Retorna todas as respostas submetidas"
+					}
+				},
+				{
+					"name": "Buscar Resposta por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/responses/{{responseId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses", "{{responseId}}"]
+						},
+						"description": "Retorna uma resposta específica com todos os answers"
+					}
+				},
+				{
+					"name": "Buscar Respostas de uma Pesquisa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/responses/survey/{{surveyId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses", "survey", "{{surveyId}}"]
+						},
+						"description": "Retorna todas as respostas de uma pesquisa específica"
+					}
+				},
+				{
+					"name": "Buscar Respostas por Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/responses/email/joao@example.com",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses", "email", "joao@example.com"]
+						},
+						"description": "Retorna todas as respostas de um email específico"
+					}
+				},
+				{
+					"name": "Submeter Resposta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"responseId\", jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"surveyId\": \"{{surveyId}}\",\n  \"name\": \"Maria Santos\",\n  \"email\": \"maria@example.com\",\n  \"answers\": [\n    {\n      \"questionId\": \"{{questionId}}\",\n      \"optionId\": \"{{optionId}}\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/responses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses"]
+						},
+						"description": "Submete uma resposta para uma pesquisa publicada"
+					}
+				},
+				{
+					"name": "Excluir Resposta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/responses/{{responseId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses", "{{responseId}}"]
+						},
+						"description": "Remove uma resposta"
+					}
+				}
+			]
+		},
+		{
+			"name": "Respostas Individuais (Answers)",
+			"item": [
+				{
+					"name": "Listar Todos os Answers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "answers"]
+						},
+						"description": "Retorna todos os answers cadastrados"
+					}
+				},
+				{
+					"name": "Buscar Answer por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/answers/{{answerId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "answers", "{{answerId}}"]
+						},
+						"description": "Retorna um answer específico"
+					}
+				},
+				{
+					"name": "Buscar Answers de uma Resposta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/answers/response/{{responseId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "answers", "response", "{{responseId}}"]
+						},
+						"description": "Retorna todos os answers de uma resposta específica"
+					}
+				},
+				{
+					"name": "Buscar Answers de uma Questão",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/answers/question/{{questionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "answers", "question", "{{questionId}}"]
+						},
+						"description": "Retorna todos os answers de uma questão (útil para análise)"
+					}
+				},
+				{
+					"name": "Criar Novo Answer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"questionId\": \"{{questionId}}\",\n  \"optionId\": \"{{optionId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "answers"]
+						},
+						"description": "Cria um novo answer"
+					}
+				},
+				{
+					"name": "Excluir Answer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/answers/{{answerId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "answers", "{{answerId}}"]
+						},
+						"description": "Remove um answer"
+					}
+				}
+			]
+		},
+		{
+			"name": "Fluxo Completo - Exemplo",
+			"item": [
+				{
+					"name": "1. Criar Pesquisa",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"surveyId\", jsonData.id);",
+									"    console.log(\"Pesquisa criada com ID: \" + jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Pesquisa de Satisfação do Cliente\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys"]
+						}
+					}
+				},
+				{
+					"name": "2. Adicionar Primeira Questão",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"questionId\", jsonData.id);",
+									"    if (jsonData.options && jsonData.options.length > 0) {",
+									"        pm.collectionVariables.set(\"optionId\", jsonData.options[0].id);",
+									"    }",
+									"    console.log(\"Questão criada com ID: \" + jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Como você avalia o atendimento?\",\n  \"order\": 1,\n  \"options\": [\n    { \"text\": \"Muito Satisfeito\", \"order\": 1 },\n    { \"text\": \"Satisfeito\", \"order\": 2 },\n    { \"text\": \"Neutro\", \"order\": 3 },\n    { \"text\": \"Insatisfeito\", \"order\": 4 },\n    { \"text\": \"Muito Insatisfeito\", \"order\": 5 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}", "questions"]
+						}
+					}
+				},
+				{
+					"name": "3. Adicionar Segunda Questão",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Você recomendaria nossos serviços?\",\n  \"order\": 2,\n  \"options\": [\n    { \"text\": \"Com certeza\", \"order\": 1 },\n    { \"text\": \"Provavelmente sim\", \"order\": 2 },\n    { \"text\": \"Talvez\", \"order\": 3 },\n    { \"text\": \"Provavelmente não\", \"order\": 4 },\n    { \"text\": \"Definitivamente não\", \"order\": 5 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}", "questions"]
+						}
+					}
+				},
+				{
+					"name": "4. Publicar Pesquisa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}/publish",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}", "publish"]
+						}
+					}
+				},
+				{
+					"name": "5. Consultar Pesquisa Publicada",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}"]
+						}
+					}
+				},
+				{
+					"name": "6. Submeter Resposta do Cliente 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"surveyId\": \"{{surveyId}}\",\n  \"name\": \"João Silva\",\n  \"email\": \"joao.silva@example.com\",\n  \"answers\": [\n    {\n      \"questionId\": \"{{questionId}}\",\n      \"optionId\": \"{{optionId}}\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/responses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses"]
+						}
+					}
+				},
+				{
+					"name": "7. Consultar Respostas da Pesquisa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/responses/survey/{{surveyId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "responses", "survey", "{{surveyId}}"]
+						}
+					}
+				},
+				{
+					"name": "8. Fechar Pesquisa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/surveys/{{surveyId}}/close",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "surveys", "{{surveyId}}", "close"]
+						}
+					}
+				}
+			],
+			"description": "Fluxo completo do início ao fim: criar pesquisa, adicionar questões, publicar, coletar respostas e fechar"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7000",
+			"type": "string"
+		},
+		{
+			"key": "surveyId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "questionId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "optionId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "responseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "answerId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

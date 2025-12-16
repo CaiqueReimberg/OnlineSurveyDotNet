@@ -1,0 +1,110 @@
+# =========================
+# .NET / C#
+# =========================
+bin/
+obj/
+out/
+
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+
+# =========================
+# Visual Studio
+# =========================
+.vs/
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.userprefs
+*.vssscc
+*.sln.docstates
+
+# Visual Studio Cache
+*.VC.db
+*.VC.opendb
+
+# =========================
+# Rider
+# =========================
+.idea/
+*.sln.iml
+
+# =========================
+# VS Code
+# =========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Test Results
+# =========================
+TestResults/
+coverage/
+coverage.cobertura.xml
+*.coverage
+*.coveragexml
+
+# =========================
+# Entity Framework
+# =========================
+*.mdf
+*.ldf
+*.db
+*.db-shm
+*.db-wal
+
+# =========================
+# Secrets / Env
+# =========================
+.env
+.env.*
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+
+# =========================
+# Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
+# NuGet
+# =========================
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+
+# =========================
+# Publish
+# =========================
+publish/
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.bak
+*.swp
