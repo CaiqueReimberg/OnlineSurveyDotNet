@@ -106,6 +106,8 @@ https://localhost:<porta>/swagger
 
 O projeto é testado através de uma **collection do Postman** que pode ser encontrada na raiz do projeto. Na collection haverá uma pasta chamada **Fluxo Completo - Exemplo**, para validar basta executar sequencialmente.
 
+Arquivo **Infnet.OnlineSurveysAPI.postman_collection,json**
+
 ### ⚠️ Execução em Ordem (Fluxo Completo)
 
 Os endpoints **devem ser executados em ordem**, pois cada etapa depende da anterior:
